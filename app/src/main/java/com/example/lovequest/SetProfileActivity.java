@@ -66,7 +66,7 @@ public class SetProfileActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(SetProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                         // Redirect to the next activity after profile setup
-                        startActivity(new Intent(SetProfileActivity.this, NextActivity.class));
+                        startActivity(new Intent(SetProfileActivity.this, MainActivity.class));
                         finish();
                     })
                     .addOnFailureListener(e -> Toast.makeText(SetProfileActivity.this, "Error updating profile", Toast.LENGTH_SHORT).show());

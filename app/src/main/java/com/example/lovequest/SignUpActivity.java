@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SignUpActivity extends AppCompatActivity {
     private ImageView googleSignInBtn;
     private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
+    private Button signUpButton;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
@@ -87,7 +89,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateUserProfile(user);
+                            updateUserProfile(user);  // Call updateUserProfile here
                         } else {
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -142,7 +144,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
-                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        // Redirect to SetProfileActivity instead of MainActivity
+                        Intent intent = new Intent(SignUpActivity.this, SetProfileActivity.class);
                         startActivity(intent);
                         finish();
                     })
