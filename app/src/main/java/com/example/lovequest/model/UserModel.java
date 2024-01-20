@@ -1,4 +1,4 @@
-package com.example.lovequest;
+package com.example.lovequest.model;
 
 import com.google.firebase.Timestamp;
 
