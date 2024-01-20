@@ -15,7 +15,7 @@
         android:theme="@style/Theme.LoveQuest"
         tools:targetApi="31">
         <activity
-            android:name=".MusicPlayerActivity"
+            android:name=".SignInActivity"
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"
@@ -24,7 +24,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".MusicPlayerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,18 +33,6 @@
             </intent-filter>
         </activity>
 
-
-        <activity
-            android:name="com.spotify.sdk.android.authentication.LoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <meta-data
-            android:name="com.spotify.sdk.android.authentication.redirect_uri"
-            android:value="your-redirect-uri" />
-
-        <meta-data
-            android:name="com.spotify.sdk.android.authentication.client_id"
-            android:value="your-client-id" />
 
     </application>
 </manifest>
