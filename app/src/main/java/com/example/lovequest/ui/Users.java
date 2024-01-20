@@ -1,4 +1,4 @@
-package com.example.lovequest;
+package com.example.lovequest.ui;
 
 public class Users {
     String userID;

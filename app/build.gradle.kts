@@ -30,6 +30,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -47,4 +51,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    implementation ("com.mesibo.api:webrtc:1.0.5")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.guolindev.permissionx:permissionx:1.6.1")
 }
