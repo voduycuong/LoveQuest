@@ -3,7 +3,6 @@ package com.example.lovequest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +29,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
-    private ProgressDialog progressDialog;
     private final int RC_SIGN_IN = 40;
 
     @Override
@@ -47,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com")
+                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com\n") // Replace with your client ID
                 .requestEmail()
                 .build();
 
@@ -64,27 +62,25 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createAccountWithEmail();
-                // Start sign in activity
-                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
-                startActivity(intent);
-                finish();
             }
-
         });
     }
 
     private void createAccountWithEmail() {
-        String email = emailEditText.getText().toString();
-        String confirmEmail = confirmEmailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String confirmPassword = confirmPasswordEditText.getText().toString();
+        String email = emailEditText.getText().toString().trim();
+        String confirmEmail = confirmEmailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
+
+        if (email.isEmpty() || confirmEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(SignUpActivity.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (!email.equals(confirmEmail) || !password.equals(confirmPassword)) {
             Toast.makeText(SignUpActivity.this, "Emails or passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // TODO: Add more robust validation for email and password
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -147,7 +143,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
-                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
                         startActivity(intent);
                         finish();
                     })
