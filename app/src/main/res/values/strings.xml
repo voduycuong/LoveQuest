@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Love Quest</string>
+    <string name="app_name">Heart Quest</string>
+
+    <string-array name="country_array">
+        <item>Vietnam</item>
+        <item>Thailand</item>
+        <item>Lao</item>
+        <item>Indonesia</item>
+    </string-array>
+
+    <string-array name="religion_array">
+        <item>Christian</item>
+        <item>Buddism</item>
+        <item>Muslim</item>
+    </string-array>
+
+    <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_chat">Chats</string>
 </resources>
