@@ -23,10 +23,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private ImageView googleSignInBtn;
-    private EditText emailEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
@@ -35,11 +36,13 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         googleSignInBtn = findViewById(R.id.googleSignInBtn);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        confirmEmailEditText = findViewById(R.id.confirmEmailEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -57,30 +60,37 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.signInButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInWithEmail();
+                createAccountWithEmail();
             }
         });
     }
 
-    private void signInWithEmail() {
+    private void createAccountWithEmail() {
         String email = emailEditText.getText().toString();
+        String confirmEmail = confirmEmailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
+        String confirmPassword = confirmPasswordEditText.getText().toString();
 
-        // TODO: Add validation for email and password
+        if (!email.equals(confirmEmail) || !password.equals(confirmPassword)) {
+            Toast.makeText(SignUpActivity.this, "Emails or passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+        // TODO: Add more robust validation for email and password
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success
-                            goToMainActivity();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            updateUserProfile(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -97,6 +107,7 @@ public class SignInActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
@@ -113,19 +124,29 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success
-                            goToMainActivity();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            updateUserProfile(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(SignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void goToMainActivity() {
-        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+    private void updateUserProfile(FirebaseUser user) {
+        if (user != null) {
+            UserModel userModel = new UserModel();
+            userModel.setUserId(user.getUid());
+            userModel.setUsername(user.getDisplayName());
+            userModel.setPhotoUrl(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
+
+            FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
+                    .addOnSuccessListener(aVoid -> {
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Error saving user information", Toast.LENGTH_SHORT).show());
+        }
     }
 }

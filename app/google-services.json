@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "815785697369",
-    "firebase_url": "https://love-quest-c46a6-default-rtdb.firebaseio.com",
-    "project_id": "love-quest-c46a6",
-    "storage_bucket": "love-quest-c46a6.appspot.com"
+    "project_number": "1092678794565",
+    "project_id": "heartquest-78868",
+    "storage_bucket": "heartquest-78868.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:815785697369:android:022beba52346621d201148",
+        "mobilesdk_app_id": "1:1092678794565:android:c97d5a882b319a92a6d22c",
         "android_client_info": {
           "package_name": "com.example.lovequest"
         }
       },
       "oauth_client": [
         {
-          "client_id": "815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com",
+          "client_id": "1092678794565-gdv8dv141dk4liu097b5nphf7i9ktimv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.lovequest",
-            "certificate_hash": "056faeb1b2991858f37eabedb5e8b5a9f2a6662a"
+            "certificate_hash": "e48bcbc94fff3c312cb59820e30a13f2ae15cc0e"
           }
         },
         {
-          "client_id": "815785697369-8iq1veeignc76avbfv0cka8ljlm5eqnl.apps.googleusercontent.com",
+          "client_id": "1092678794565-hj66ocpv83tff902ov9ngv4oflre2101.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMWHhjlGI06RAsoVURfUp4w4m-eK24bs8"
+          "current_key": "AIzaSyB9LcoALwlvcz8_di6FEgxEf7s6aDTHoC4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "815785697369-8iq1veeignc76avbfv0cka8ljlm5eqnl.apps.googleusercontent.com",
+              "client_id": "1092678794565-hj66ocpv83tff902ov9ngv4oflre2101.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
