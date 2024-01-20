@@ -99,38 +99,49 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message) {
+        if (chatroomModel == null) {
+            chatroomModel = new ChatroomModel();
+            chatroomModel.setChatroomId(chatroomId);
+            chatroomModel.setUserIds(Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()));
+        }
         ChatMessageModel newMessage = new ChatMessageModel(message, FirebaseUtil.getCurrentUserId(), Timestamp.now());
         FirebaseUtil.getChatroomMessagesRef(chatroomId).add(newMessage)
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        Log.d("ChatActivity", "Message added successfully");
+                    if (task.isSuccessful()) {
                         messageInput.setText("");
-                        updateChatroom(message); // Update the chatroom here
-                        notifyUser(message);
+                        updateChatroom(message);
                     } else {
                         Log.e("ChatActivity", "Failed to add message", task.getException());
                     }
                 });
     }
 
-    private void updateChatroom(String message) {
-        Timestamp now = Timestamp.now();
-        chatroomModel = new ChatroomModel(chatroomId, Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()), now, FirebaseUtil.getCurrentUserId(), message);
-        FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel)
-                .addOnSuccessListener(aVoid -> Log.d("ChatActivity", "Chatroom created/updated successfully"))
-                .addOnFailureListener(e -> Log.e("ChatActivity", "Error creating/updating chatroom", e));
-    }
-
     private void prepareChatroom() {
         FirebaseUtil.getChatroomRef(chatroomId).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                chatroomModel = task.getResult().toObject(ChatroomModel.class);
-                if(chatroomModel == null) {
-                    updateChatroom("");
+            if (task.isSuccessful()) {
+                ChatroomModel existingChatroomModel = task.getResult().toObject(ChatroomModel.class);
+                if (existingChatroomModel != null) {
+                    chatroomModel = existingChatroomModel;
+                } else {
+                    chatroomModel = new ChatroomModel();
+                    chatroomModel.setChatroomId(chatroomId);
+                    chatroomModel.setUserIds(Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()));
+                    updateChatroom(""); // Initialize with empty last message
                 }
             }
         });
     }
+
+    private void updateChatroom(String message) {
+        chatroomModel.setLastMessage(message);
+        chatroomModel.setLastMessageSenderId(FirebaseUtil.getCurrentUserId());
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+
+        FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel)
+                .addOnSuccessListener(aVoid -> Log.d("ChatActivity", "Chatroom updated successfully"))
+                .addOnFailureListener(e -> Log.e("ChatActivity", "Error updating chatroom", e));
+    }
+
 
     private void notifyUser(String message) {
         FirebaseUtil.getUserReference().get().addOnCompleteListener(task -> {
