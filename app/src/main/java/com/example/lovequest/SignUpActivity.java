@@ -23,28 +23,31 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
+    private final int RC_SIGN_IN = 40;
     private ImageView googleSignInBtn;
-    private EditText emailEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
-    private final int RC_SIGN_IN = 40;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         googleSignInBtn = findViewById(R.id.googleSignInBtn);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        confirmEmailEditText = findViewById(R.id.confirmEmailEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com\n")
+                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -57,31 +60,45 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.signInButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInWithEmail();
+                createAccountWithEmail();
             }
         });
     }
 
-    private void signInWithEmail() {
+    private void createAccountWithEmail() {
         String email = emailEditText.getText().toString().trim();
+        String confirmEmail = confirmEmailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(SignInActivity.this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || confirmEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(SignUpActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+        if (!email.equals(confirmEmail)) {
+            Toast.makeText(SignUpActivity.this, "Emails do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            goToMainActivity();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            updateUserProfile(user);
                         } else {
-                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -98,6 +115,7 @@ public class SignInActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
@@ -114,17 +132,29 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            goToMainActivity();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            updateUserProfile(user);
                         } else {
-                            Toast.makeText(SignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void goToMainActivity() {
-        Intent intent = new Intent(SignInActivity.this, HomeScreen.class);
-        startActivity(intent);
-        finish();
+    private void updateUserProfile(FirebaseUser user) {
+        if (user != null) {
+            UserModel userModel = new UserModel();
+            userModel.setUserId(user.getUid());
+            userModel.setUsername(user.getDisplayName());
+            userModel.setPhotoUrl(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
+
+            FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
+                    .addOnSuccessListener(aVoid -> {
+                        Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Error saving user information", Toast.LENGTH_SHORT).show());
+        }
     }
 }
