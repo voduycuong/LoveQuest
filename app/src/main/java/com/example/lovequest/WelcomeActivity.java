@@ -24,7 +24,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Start sign in activity
-                Intent intent = new Intent(WelcomeActivity.this, BeginActivity1.class);
+                Intent intent = new Intent(WelcomeActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
             }
