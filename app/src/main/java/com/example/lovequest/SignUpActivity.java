@@ -64,7 +64,12 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createAccountWithEmail();
+                // Start sign in activity
+                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
+                startActivity(intent);
+                finish();
             }
+
         });
     }
 
