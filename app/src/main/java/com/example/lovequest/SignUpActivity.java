@@ -3,6 +3,7 @@ package com.example.lovequest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
+    private ProgressDialog progressDialog;
     private final int RC_SIGN_IN = 40;
 
     @Override
@@ -45,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com\n") // Replace with your client ID
+                .requestIdToken("815785697369-h01ujjrou2ora4n5dmtj5dugg5ot0udr.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -73,12 +75,17 @@ public class SignUpActivity extends AppCompatActivity {
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
         if (email.isEmpty() || confirmEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(SignUpActivity.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (!email.equals(confirmEmail) || !password.equals(confirmPassword)) {
-            Toast.makeText(SignUpActivity.this, "Emails or passwords do not match", Toast.LENGTH_SHORT).show();
+        if (!email.equals(confirmEmail)) {
+            Toast.makeText(SignUpActivity.this, "Emails do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
