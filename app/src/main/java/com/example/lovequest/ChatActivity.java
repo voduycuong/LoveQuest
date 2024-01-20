@@ -88,14 +88,32 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        Query query = FirebaseUtil.getChatroomMessagesRef(chatroomId).orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = FirebaseUtil.getChatroomMessagesRef(chatroomId)
+                .orderBy("timestamp", Query.Direction.ASCENDING); // Changed to ASCENDING
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
                 .setQuery(query, ChatMessageModel.class).build();
 
         chatAdapter = new ChatRecyclerAdapter(options, getApplicationContext());
-        chatRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true); // To keep the view scrolled to the bottom
+        chatRecyclerView.setLayoutManager(layoutManager);
         chatRecyclerView.setAdapter(chatAdapter);
-        chatAdapter.startListening();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (chatAdapter != null) {
+            chatAdapter.startListening();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (chatAdapter != null) {
+            chatAdapter.stopListening();
+        }
     }
 
     private void sendMessage(String message) {
