@@ -15,8 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SetProfileActivity extends AppCompatActivity {
 
-    private EditText nameEditText, dateOfBirthEditText, genderEditText, countryEditText, nationalityEditText, cityEditText, descriptionEditText;
-    private String photoUrl; // You will set this when the user uploads a photo
+    private EditText nameEditText, usernameEditText, dateOfBirthEditText, genderEditText, countryEditText, nationalityEditText, cityEditText, descriptionEditText;
+    private String photoUrl, email; // You will set this when the user uploads a photo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,16 @@ public class SetProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_profile);
 
         nameEditText = findViewById(R.id.nameEditText);
+        usernameEditText = findViewById(R.id.usernameEditText);
         dateOfBirthEditText = findViewById(R.id.dateOfBirthEditText);
         genderEditText = findViewById(R.id.genderEditText);
         countryEditText = findViewById(R.id.countryEditText);
         nationalityEditText = findViewById(R.id.nationalityEditText);
         cityEditText = findViewById(R.id.cityEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
+
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
 
         findViewById(R.id.saveProfileButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +45,7 @@ public class SetProfileActivity extends AppCompatActivity {
 
     private void saveUserProfile() {
         String name = nameEditText.getText().toString();
+        String username = usernameEditText.getText().toString();
         String dateOfBirth = dateOfBirthEditText.getText().toString();
         String gender = genderEditText.getText().toString();
         String country = countryEditText.getText().toString();
@@ -55,6 +60,8 @@ public class SetProfileActivity extends AppCompatActivity {
             UserModel userModel = new UserModel();
             userModel.setUserId(currentUser.getUid());
             userModel.setName(name);
+            userModel.setUsername(username);
+            userModel.setEmail(email);
             userModel.setDateOfBirth(dateOfBirth);
             userModel.setGender(gender);
             userModel.setCountry(country);

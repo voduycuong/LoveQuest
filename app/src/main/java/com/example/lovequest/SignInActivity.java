@@ -124,7 +124,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        Intent intent = new Intent(SignInActivity.this, SearchUserActivity.class);
         startActivity(intent);
         finish();
     }

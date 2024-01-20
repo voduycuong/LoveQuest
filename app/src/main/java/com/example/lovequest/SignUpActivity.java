@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -143,14 +144,20 @@ public class SignUpActivity extends AppCompatActivity {
             userModel.setUsername(user.getDisplayName());
             userModel.setPhotoUrl(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
 
+            // Save the user data in Firestore
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
-                        // Redirect to SetProfileActivity instead of MainActivity
+                        // On success, proceed to SetProfileActivity
                         Intent intent = new Intent(SignUpActivity.this, SetProfileActivity.class);
+                        intent.putExtra("email", user.getEmail()); // Add this line to put the email in the intent
                         startActivity(intent);
                         finish();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Error saving user information", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> {
+                        // Log the error or show it in a Toast
+                        Log.e("SignUpActivity", "Error saving user information", e);
+                        Toast.makeText(SignUpActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
         }
     }
 }

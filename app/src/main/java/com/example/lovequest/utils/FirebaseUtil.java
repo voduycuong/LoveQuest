@@ -22,11 +22,11 @@ public class FirebaseUtil {
     }
 
     public static DocumentReference getUserReference() {
-        return FirebaseFirestore.getInstance().collection("users").document(getCurrentUserId());
+        return FirebaseFirestore.getInstance().collection("Users").document(getCurrentUserId());
     }
 
-    public static CollectionReference getUsersReference() {
-        return FirebaseFirestore.getInstance().collection("users");
+    public static CollectionReference getAllUserReference() {
+        return FirebaseFirestore.getInstance().collection("Users");
     }
 
     public static DocumentReference getChatroomRef(String chatroomId) {
@@ -47,7 +47,7 @@ public class FirebaseUtil {
 
     public static DocumentReference getChatPartnerRef(List<String> userIds) {
         String otherUserId = userIds.get(0).equals(getCurrentUserId()) ? userIds.get(1) : userIds.get(0);
-        return getUsersReference().document(otherUserId);
+        return getAllUserReference().document(otherUserId);
     }
 
     public static String formatTimestamp(Timestamp timestamp) {

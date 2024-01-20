@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 public class UserModel {
     private String phone;
     private String username;
+    private String email;
     private Timestamp createdTimestamp;
     private String userId;
     private String fcmToken;
@@ -23,9 +24,10 @@ public class UserModel {
     }
 
     // Constructor with new fields
-    public UserModel(String phone, String username, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl) {
+    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl) {
         this.phone = phone;
         this.username = username;
+        this.email = email;
         this.createdTimestamp = createdTimestamp;
         this.userId = userId;
         this.name = name;
@@ -53,6 +55,10 @@ public class UserModel {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 
     public Timestamp getCreatedTimestamp() {
         return createdTimestamp;

@@ -112,7 +112,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private void updateChatroom(String message) {
         chatroomModel = new ChatroomModel(chatroomId, Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()), Timestamp.now(), message);
-        FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel);
+        FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel)
+                .addOnSuccessListener(aVoid -> Log.d("ChatActivity", "Chatroom created/updated successfully"))
+                .addOnFailureListener(e -> Log.e("ChatActivity", "Error creating/updating chatroom", e));
+
     }
 
     private void prepareChatroom() {
