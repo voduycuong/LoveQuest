@@ -26,12 +26,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpActivity extends AppCompatActivity {
+    private final int RC_SIGN_IN = 40;
     private ImageView googleSignInBtn;
     private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
-    private final int RC_SIGN_IN = 40;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
