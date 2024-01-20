@@ -7,18 +7,24 @@ import android.os.Bundle;
 import android.app.DatePickerDialog;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.util.Calendar;
+import android.widget.Toast;
 
+import com.example.lovequest.model.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Calendar;
 
 public class BeginActivity1 extends AppCompatActivity {
 
     private TextView tvSelectedDate;
     private Button btnDatePicker;
     private EditText inputAge;
-
+    private EditText inputName;
+    private EditText inputJob;
     private Button continue1BTN;
 
     @Override
@@ -29,9 +35,10 @@ public class BeginActivity1 extends AppCompatActivity {
         tvSelectedDate = findViewById(R.id.tvSelectedDate);
         btnDatePicker = findViewById(R.id.btnDatePicker);
         inputAge = findViewById(R.id.input_age);
+        inputName = findViewById(R.id.input_name);
+        inputJob = findViewById(R.id.input_job);
         continue1BTN = findViewById(R.id.continuebtn1);
 
-        // OnClickListener for Choosing Date Button
         btnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,17 +48,13 @@ public class BeginActivity1 extends AppCompatActivity {
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(BeginActivity1.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                                tvSelectedDate.setText(selectedDate);
+                        (view, year1, monthOfYear, dayOfMonth) -> {
+                            String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
+                            tvSelectedDate.setText(selectedDate);
 
-                                // Calculate age and set it in the EditText
-                                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                                int age = currentYear - year;
-                                inputAge.setText(String.valueOf(age));
-                            }
+                            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                            int age = currentYear - year1;
+                            inputAge.setText(String.valueOf(age));
                         }, year, month, day);
                 datePickerDialog.show();
             }
@@ -60,11 +63,62 @@ public class BeginActivity1 extends AppCompatActivity {
         continue1BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start sign in activity
-                Intent intent = new Intent(BeginActivity1.this, BeginActivity2.class);
-                startActivity(intent);
-                finish();
+                if (validateInputs()) {
+                    saveUserProfile();
+                }
             }
         });
+    }
+
+    private boolean validateInputs() {
+        String name = inputName.getText().toString().trim();
+        String dateOfBirth = tvSelectedDate.getText().toString().trim();
+        String age = inputAge.getText().toString().trim();
+        String job = inputJob.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (dateOfBirth.isEmpty()) {
+            Toast.makeText(this, "Please select your date of birth", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (age.isEmpty()) {
+            Toast.makeText(this, "Age cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (job.isEmpty()) {
+            Toast.makeText(this, "Please enter your job", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void saveUserProfile() {
+        String name = inputName.getText().toString();
+        String dateOfBirth = tvSelectedDate.getText().toString();
+        String age = inputAge.getText().toString();
+        String job = inputJob.getText().toString();
+
+        UserModel userModel = new UserModel();
+        userModel.setName(name);
+        userModel.setDateOfBirth(dateOfBirth);
+        userModel.setAge(age);
+        //userModel.setJob(job);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            FirebaseFirestore.getInstance().collection("Users").document(currentUser.getUid()).set(userModel)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(BeginActivity1.this, "Profile Saved", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(BeginActivity1.this, BeginActivity2.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(BeginActivity1.this, "Error saving profile", Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(this, "User not signed in", Toast.LENGTH_SHORT).show();
+        }
     }
 }

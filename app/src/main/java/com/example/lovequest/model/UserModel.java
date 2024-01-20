@@ -13,6 +13,7 @@ public class UserModel {
     // New fields
     private String name;
     private String dateOfBirth; // Assuming date of birth is a string in format "YYYY-MM-DD"
+    private String age;
     private String gender;
     private String country;
     private String nationality;
@@ -32,6 +33,7 @@ public class UserModel {
         this.userId = userId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        this.age = age;
         this.gender = gender;
         this.country = country;
         this.nationality = nationality;
@@ -90,6 +92,14 @@ public class UserModel {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public String getGender() {

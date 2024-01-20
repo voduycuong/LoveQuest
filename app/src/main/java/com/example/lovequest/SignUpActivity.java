@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +30,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SignUpActivity extends AppCompatActivity {
     private ImageView googleSignInBtn;
     private EditText emailEditText, passwordEditText, confirmEmailEditText, confirmPasswordEditText;
-    private Button signUpButton;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
@@ -47,6 +45,19 @@ public class SignUpActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmEmailEditText = findViewById(R.id.confirmEmailEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+
+        //Testing Button
+        Button testingButton = findViewById(R.id.testing_button);
+        testingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class); // Replace NextActivity with your next activity class
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -73,17 +84,25 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void createAccountWithEmail() {
-        String email = emailEditText.getText().toString();
-        String confirmEmail = confirmEmailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String confirmPassword = confirmPasswordEditText.getText().toString();
+        String email = emailEditText.getText().toString().trim();
+        String confirmEmail = confirmEmailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
-        if (!email.equals(confirmEmail) || !password.equals(confirmPassword)) {
-            Toast.makeText(SignUpActivity.this, "Emails or passwords do not match", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || confirmEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(SignUpActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // TODO: Add more robust validation for email and password
+        if (!email.equals(confirmEmail)) {
+            Toast.makeText(SignUpActivity.this, "Emails do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -91,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateUserProfile(user);  // Call updateUserProfile here
+                            updateUserProfile(user);
                         } else {
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -144,20 +163,13 @@ public class SignUpActivity extends AppCompatActivity {
             userModel.setUsername(user.getDisplayName());
             userModel.setPhotoUrl(user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : null);
 
-            // Save the user data in Firestore
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
-                        // On success, proceed to SetProfileActivity
-                        Intent intent = new Intent(SignUpActivity.this, SetProfileActivity.class);
-                        intent.putExtra("email", user.getEmail()); // Add this line to put the email in the intent
+                        Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
                         startActivity(intent);
                         finish();
                     })
-                    .addOnFailureListener(e -> {
-                        // Log the error or show it in a Toast
-                        Log.e("SignUpActivity", "Error saving user information", e);
-                        Toast.makeText(SignUpActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Error saving user information", Toast.LENGTH_SHORT).show());
         }
     }
 }
