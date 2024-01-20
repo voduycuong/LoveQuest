@@ -99,23 +99,26 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message) {
-        updateChatroom(message);
         ChatMessageModel newMessage = new ChatMessageModel(message, FirebaseUtil.getCurrentUserId(), Timestamp.now());
         FirebaseUtil.getChatroomMessagesRef(chatroomId).add(newMessage)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
+                        Log.d("ChatActivity", "Message added successfully");
                         messageInput.setText("");
+                        updateChatroom(message); // Update the chatroom here
                         notifyUser(message);
+                    } else {
+                        Log.e("ChatActivity", "Failed to add message", task.getException());
                     }
                 });
     }
 
     private void updateChatroom(String message) {
-        chatroomModel = new ChatroomModel(chatroomId, Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()), Timestamp.now(), message);
+        Timestamp now = Timestamp.now();
+        chatroomModel = new ChatroomModel(chatroomId, Arrays.asList(FirebaseUtil.getCurrentUserId(), otherUser.getUserId()), now, FirebaseUtil.getCurrentUserId(), message);
         FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel)
                 .addOnSuccessListener(aVoid -> Log.d("ChatActivity", "Chatroom created/updated successfully"))
                 .addOnFailureListener(e -> Log.e("ChatActivity", "Error creating/updating chatroom", e));
-
     }
 
     private void prepareChatroom() {
