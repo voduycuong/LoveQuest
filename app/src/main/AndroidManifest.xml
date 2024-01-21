@@ -44,6 +44,10 @@
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,9 +55,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".SignInActivity"
             android:exported="false" />
@@ -65,9 +67,8 @@
             android:exported="false" />
         <activity
             android:name=".CalendarActivity"
-            android:exported="false">
+            android:exported="false" />
 
-        </activity>
 
         <service
             android:name=".FCMNotificationService"
