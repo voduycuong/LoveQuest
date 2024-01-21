@@ -1,14 +1,20 @@
 package com.example.lovequest;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.lovequest.adapter.ChatRecyclerAdapter;
@@ -40,10 +46,11 @@ public class ChatActivity extends AppCompatActivity {
     private ChatRecyclerAdapter chatAdapter;
 
     private EditText messageInput;
-    private ImageButton btnSendMessage, btnBack;
+    private ImageButton btnSendMessage, btnBack, btnCall;
     private TextView txtOtherUsername;
     private RecyclerView chatRecyclerView;
     private ImageView imgProfile;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +61,14 @@ public class ChatActivity extends AppCompatActivity {
         prepareChatroom();
         setupRecyclerView();
         handleMessages();
+        requestCameraPermission();
     }
 
     private void initializeViews() {
         otherUser = AndroidUtil.extractUserFromIntent(getIntent());
         chatroomId = FirebaseUtil.createChatroomId(FirebaseUtil.getCurrentUserId(), otherUser.getUserId());
 
+        btnCall = findViewById(R.id.call_btn);
         messageInput = findViewById(R.id.chat_message_input);
         btnSendMessage = findViewById(R.id.message_send_btn);
         btnBack = findViewById(R.id.back_btn);
@@ -76,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> onBackPressed());
         txtOtherUsername.setText(otherUser.getUsername());
+        btnCall.setOnClickListener(v -> startCall());
     }
 
     private void handleMessages() {
@@ -160,6 +170,36 @@ public class ChatActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("ChatActivity", "Error updating chatroom", e));
     }
 
+    private void startCall() {
+        Intent intent = new Intent(ChatActivity.this, CallActivity.class);
+        intent.putExtra("targetUsername", otherUser.getUsername());
+        startActivity(intent);
+    }
+
+    private void requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    CAMERA_PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission has already been granted, continue with camera operation
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Camera permission has been granted, continue as usual
+            } else {
+                Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     private void notifyUser(String message) {
         FirebaseUtil.getUserReference().get().addOnCompleteListener(task -> {

@@ -61,7 +61,11 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.firebase:firebase-storage-ktx:20.1.0")
+    implementation ("com.google.firebase:firebase-database-ktx:20.2.2")
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.mesibo.api:webrtc:1.0.5")
+    implementation ("com.guolindev.permissionx:permissionx:1.6.1")
 }

@@ -166,6 +166,8 @@ public class SignUpActivity extends AppCompatActivity {
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
                         Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
+                        intent.putExtra("email", user.getEmail());
+                        intent.putExtra("userId", user.getUid());
                         startActivity(intent);
                         finish();
                     })

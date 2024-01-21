@@ -21,6 +21,7 @@ import java.util.Calendar;
 public class BeginActivity1 extends AppCompatActivity {
 
     private TextView tvSelectedDate;
+    private String userEmail, userId;
     private Button btnDatePicker;
     private EditText inputAge;
     private EditText inputName;
@@ -31,6 +32,9 @@ public class BeginActivity1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin1);
+
+        userEmail = getIntent().getStringExtra("email");
+        userId = getIntent().getStringExtra("userId");
 
         tvSelectedDate = findViewById(R.id.tvSelectedDate);
         btnDatePicker = findViewById(R.id.btnDatePicker);
@@ -102,6 +106,8 @@ public class BeginActivity1 extends AppCompatActivity {
         String job = inputJob.getText().toString();
 
         UserModel userModel = new UserModel();
+        userModel.setEmail(userEmail);
+        userModel.setUserId(userId);
         userModel.setName(name);
         userModel.setDateOfBirth(dateOfBirth);
         userModel.setAge(age);
