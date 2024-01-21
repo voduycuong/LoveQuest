@@ -46,42 +46,50 @@ public class MainRepository implements WebRTCClient.Listener {
     }
 
     public void initializeWebRTCClient(Context context, String email) {
-        if (webRTCClient == null) {
+        if (email != null && !email.isEmpty()) {
             updateCurrentUsername(email); // Using email as the username
-            this.webRTCClient = new WebRTCClient(context, new MyPeerConnectionObserver() {
-                @Override
-                public void onAddStream(MediaStream mediaStream) {
-                    super.onAddStream(mediaStream);
-                    try {
-                        mediaStream.videoTracks.get(0).addSink(remoteView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                @Override
-                public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
-                    Log.d("TAG", "onConnectionChange: " + newState);
-                    super.onConnectionChange(newState);
-                    if (newState == PeerConnection.PeerConnectionState.CONNECTED && listener != null) {
-                        listener.webrtcConnected();
-                    }
+            // Update FirebaseClient with current email
+            firebaseClient.setCurrentEmail(currentUsername);
 
-                    if (newState == PeerConnection.PeerConnectionState.CLOSED ||
-                            newState == PeerConnection.PeerConnectionState.DISCONNECTED) {
-                        if (listener != null) {
-                            listener.webrtcClosed();
+            if (webRTCClient == null) {
+                this.webRTCClient = new WebRTCClient(context, new MyPeerConnectionObserver() {
+                    @Override
+                    public void onAddStream(MediaStream mediaStream) {
+                        super.onAddStream(mediaStream);
+                        try {
+                            mediaStream.videoTracks.get(0).addSink(remoteView);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                }
 
-                @Override
-                public void onIceCandidate(IceCandidate iceCandidate) {
-                    super.onIceCandidate(iceCandidate);
-                    webRTCClient.sendIceCandidate(iceCandidate, target);
-                }
-            }, currentUsername);
-            webRTCClient.listener = this;
+                    @Override
+                    public void onConnectionChange(PeerConnection.PeerConnectionState newState) {
+                        Log.d("TAG", "onConnectionChange: " + newState);
+                        super.onConnectionChange(newState);
+                        if (newState == PeerConnection.PeerConnectionState.CONNECTED && listener != null) {
+                            listener.webrtcConnected();
+                        }
+
+                        if (newState == PeerConnection.PeerConnectionState.CLOSED ||
+                                newState == PeerConnection.PeerConnectionState.DISCONNECTED) {
+                            if (listener != null) {
+                                listener.webrtcClosed();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onIceCandidate(IceCandidate iceCandidate) {
+                        super.onIceCandidate(iceCandidate);
+                        webRTCClient.sendIceCandidate(iceCandidate, target);
+                    }
+                }, currentUsername);
+                webRTCClient.listener = this;
+            }
+        } else {
+            Log.e("MainRepository", "Email is null or empty.");
         }
     }
 
@@ -125,6 +133,10 @@ public class MainRepository implements WebRTCClient.Listener {
 
     public void endCall() {
         webRTCClient.closeConnection();
+    }
+
+    public String getCurrentUserEmail() {
+        return this.currentUsername; // Assuming you store the current user's email in a field named 'currentUsername'
     }
 
     public void subscribeForLatestEvent(NewEventCallBack callBack) {

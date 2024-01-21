@@ -80,13 +80,7 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if (user != null) {
-                                MainRepository mainRepository = MainRepository.getInstance();
-                                mainRepository.initializeWebRTCClient(getApplicationContext(), user.getEmail());
-
-                                goToMainActivity();
-                            }
+                            initializeWebRTCClientAndGoToMain();
                         } else {
                             // ... handle sign in failure
                         }
@@ -121,13 +115,7 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if (user != null) {
-                                MainRepository mainRepository = MainRepository.getInstance();
-                                mainRepository.initializeWebRTCClient(getApplicationContext(), user.getEmail());
-
-                                goToMainActivity();
-                            }
+                            initializeWebRTCClientAndGoToMain();
                         } else {
                             Toast.makeText(SignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -135,19 +123,15 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-    private void goToMainActivity() {
+    private void initializeWebRTCClientAndGoToMain() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             MainRepository mainRepository = MainRepository.getInstance();
-
-            // Initialize the WebRTC client with the user's email
             mainRepository.initializeWebRTCClient(getApplicationContext(), user.getEmail());
 
-            // Transition to your MainActivity
-            Intent intent = new Intent(SignInActivity.this, SearchUserActivity.class); // Replace MainActivity.class with your actual main activity class
+            Intent intent = new Intent(SignInActivity.this, SearchUserActivity.class); // Replace with your actual main activity class
             startActivity(intent);
             finish();
         }
     }
-
 }

@@ -28,7 +28,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.json.JSONObject;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -51,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private ImageView imgProfile;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+    private static final int PERMISSION_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
         setupRecyclerView();
         handleMessages();
         requestCameraPermission();
+        requestAudioPermissions();
     }
 
     private void initializeViews() {
@@ -172,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void startCall() {
         Intent intent = new Intent(ChatActivity.this, CallActivity.class);
-        intent.putExtra("targetUsername", otherUser.getUsername());
+        intent.putExtra("targetEmail", otherUser.getEmail());
         startActivity(intent);
     }
 
@@ -186,6 +191,20 @@ public class ChatActivity extends AppCompatActivity {
             // Permission has already been granted, continue with camera operation
         }
     }
+
+    private void requestAudioPermissions() {
+        List<String> requiredPermissions = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requiredPermissions.add(Manifest.permission.CAMERA);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            requiredPermissions.add(Manifest.permission.RECORD_AUDIO);
+        }
+        if (!requiredPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this, requiredPermissions.toArray(new String[0]), PERMISSION_REQUEST_CODE);
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

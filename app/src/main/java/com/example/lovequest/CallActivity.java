@@ -1,6 +1,9 @@
 package com.example.lovequest;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,18 +29,31 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
         setContentView(views.getRoot());
 
         mainRepository = MainRepository.getInstance();
-        mainRepository.initLocalView(views.localView);
-        mainRepository.initRemoteView(views.remoteView);
-        mainRepository.listener = this;
 
         String targetEmail = getIntent().getStringExtra("targetEmail");
         if (targetEmail != null) {
+            Log.d(TAG, "Target Email: " + targetEmail); // Log the target email
+            Log.d(TAG, "Current User Email: " + mainRepository.getCurrentUserEmail()); // Log the current user email
             initiateCall(targetEmail);
-        } else {
-
         }
 
         setupCommonViews();
+        setupSurfaceViews();
+    }
+
+    private void setupSurfaceViews() {
+        // Initialize only if views are null to prevent re-initialization
+        if (views.localView.getHolder().getSurface() == null) {
+            mainRepository.initLocalView(views.localView);
+        }
+        if (views.remoteView.getHolder().getSurface() == null) {
+            mainRepository.initRemoteView(views.remoteView);
+        }
+        mainRepository.listener = this;
+
+        // Make SurfaceViews visible
+        views.localView.setVisibility(View.VISIBLE);
+        views.remoteView.setVisibility(View.VISIBLE);
     }
 
     private void initiateCall(String targetEmail) {
@@ -60,9 +76,7 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
                         mainRepository.startCall(data.getSender());
                         views.incomingCallLayout.setVisibility(View.GONE);
                     });
-                    views.rejectButton.setOnClickListener(v -> {
-                        views.incomingCallLayout.setVisibility(View.GONE);
-                    });
+                    views.rejectButton.setOnClickListener(v -> views.incomingCallLayout.setVisibility(View.GONE));
                 });
             }
         });
@@ -105,5 +119,18 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
     @Override
     public void webrtcClosed() {
         runOnUiThread(this::finish);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupSurfaceViews();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Properly release resources, if required
+        mainRepository.endCall();
     }
 }

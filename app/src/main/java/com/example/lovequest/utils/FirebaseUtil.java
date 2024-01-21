@@ -1,14 +1,17 @@
 package com.example.lovequest.utils;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtil {
@@ -64,5 +67,16 @@ public class FirebaseUtil {
 
     public static StorageReference getOtherUserPhotoRef(String userId) {
         return FirebaseStorage.getInstance().getReference().child("profile_pic").child(userId);
+    }
+
+    public static Task<DocumentSnapshot> getChatPartnerEmail(String chatroomId) {
+        return getChatPartnerRef(Arrays.asList(FirebaseAuth.getInstance().getCurrentUser().getUid(), chatroomId))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // You can retrieve email like this, assuming you have email field in your user document
+                        String email = documentSnapshot.getString("email");
+                    }
+                });
     }
 }
