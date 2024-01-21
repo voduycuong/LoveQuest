@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class CalendarActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private Button addButton;
     private EditText addEventEditText;
+    private ImageButton backButton;
     private String selectedDate;
     private String chatroomId;
 
@@ -43,6 +45,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         addEventEditText = findViewById(R.id.addEventEditText);
         addButton = findViewById(R.id.addButton);
+        backButton = findViewById(R.id.backButton);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -56,6 +59,7 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
         addButton.setOnClickListener(v -> saveEvent());
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void saveEvent() {

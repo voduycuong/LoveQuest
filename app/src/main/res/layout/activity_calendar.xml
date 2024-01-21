@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
