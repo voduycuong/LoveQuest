@@ -177,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void startCall() {
         Intent intent = new Intent(ChatActivity.this, CallActivity.class);
-        intent.putExtra("targetEmail", otherUser.getEmail());
+        intent.putExtra("chatroomId", chatroomId); // Pass the chatroom ID
         startActivity(intent);
     }
 

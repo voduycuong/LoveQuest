@@ -1,9 +1,6 @@
 package com.example.lovequest;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +11,7 @@ import com.example.lovequest.databinding.ActivityCallBinding;
 import com.example.lovequest.repository.MainRepository;
 import com.example.lovequest.utils.DataModelType;
 import com.example.lovequest.utils.ErrorCallBack;
+import com.example.lovequest.utils.FirebaseUtil;
 
 public class CallActivity extends AppCompatActivity implements MainRepository.Listener {
 
@@ -30,11 +28,13 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
 
         mainRepository = MainRepository.getInstance();
 
-        String targetEmail = getIntent().getStringExtra("targetEmail");
-        if (targetEmail != null) {
-            Log.d(TAG, "Target Email: " + targetEmail); // Log the target email
-            Log.d(TAG, "Current User Email: " + mainRepository.getCurrentUserEmail()); // Log the current user email
-            initiateCall(targetEmail);
+        String chatroomId = getIntent().getStringExtra("chatroomId");
+        if (chatroomId != null) {
+            // Split the chatroom ID to get individual user IDs
+            String[] userIds = chatroomId.split("_");
+            String currentUserID = FirebaseUtil.getCurrentUserId();
+            String otherUserID = userIds[0].equals(currentUserID) ? userIds[1] : userIds[0];
+            initiateCall(otherUserID);
         }
 
         setupCommonViews();
