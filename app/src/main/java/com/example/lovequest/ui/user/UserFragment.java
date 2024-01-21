@@ -78,9 +78,8 @@ public class UserFragment extends Fragment {
 //        updateProfileBtn.setOnClickListener(v -> updateBtnClick());
 
         logoutBtn.setOnClickListener(v -> {
-            // Handle the logout logic here
-            // For example, sign out the user if necessary
-            FirebaseUtil.performLogout(); // If using Firebase Authentication
+            // Handle the logout logic
+            FirebaseUtil.performLogout(); // Firebase Authentication
 
             // Now create an Intent to start the WelcomeActivity
             Intent intent = new Intent(getContext(), WelcomeActivity.class);
