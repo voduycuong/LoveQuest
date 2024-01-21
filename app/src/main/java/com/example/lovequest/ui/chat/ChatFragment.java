@@ -111,6 +111,7 @@ public class ChatFragment extends Fragment {
                 adapter = new SearchUserRecyclerAdapter(options, getContext());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
+                recyclerView.setItemAnimator(null);
                 adapter.startListening();
             }
         });
