@@ -52,4 +52,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_chat">Chats</string>
+    <string name="add_profile_picture">Select an image for your profile picture</string>
 </resources>

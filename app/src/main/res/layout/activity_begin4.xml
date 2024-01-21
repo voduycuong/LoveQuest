@@ -84,6 +84,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="142dp"
+        android:layout_height="121dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/person_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView27"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/add_profile_picture" />
+
     <TextView
         android:id="@+id/textView26"
         android:layout_width="wrap_content"

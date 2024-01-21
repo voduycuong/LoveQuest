@@ -50,6 +50,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.6")
     implementation("androidx.navigation:navigation-ui:2.7.6")
     implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -68,4 +69,5 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("com.mesibo.api:webrtc:1.0.5")
     implementation ("com.guolindev.permissionx:permissionx:1.6.1")
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
 }
