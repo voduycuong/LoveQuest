@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.lovequest.repository.MainRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -79,9 +80,9 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            goToMainActivity();
+                            initializeWebRTCClientAndGoToMain();
                         } else {
-                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            // ... handle sign in failure
                         }
                     }
                 });
@@ -114,7 +115,7 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            goToMainActivity();
+                            initializeWebRTCClientAndGoToMain();
                         } else {
                             Toast.makeText(SignInActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -122,9 +123,15 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-    private void goToMainActivity() {
-        Intent intent = new Intent(SignInActivity.this, HomeScreen.class);
-        startActivity(intent);
-        finish();
+    private void initializeWebRTCClientAndGoToMain() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            MainRepository mainRepository = MainRepository.getInstance();
+            mainRepository.initializeWebRTCClient(getApplicationContext(), user.getEmail());
+
+            Intent intent = new Intent(SignInActivity.this, SearchUserActivity.class); // Replace with your actual main activity class
+            startActivity(intent);
+            finish();
+        }
     }
 }

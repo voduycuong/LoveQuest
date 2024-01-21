@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lovequest.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,10 +21,9 @@ import java.util.Calendar;
 public class BeginActivity1 extends AppCompatActivity {
 
     private TextView tvSelectedDate;
+    private String userEmail, userId;
     private Button btnDatePicker;
-    private EditText inputAge;
-    private EditText inputName;
-    private EditText inputJob;
+    private EditText inputAge, inputName, inputJob, inputUsername;
     private Button continue1BTN;
 
     @Override
@@ -31,10 +31,14 @@ public class BeginActivity1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin1);
 
+        userEmail = getIntent().getStringExtra("email");
+        userId = getIntent().getStringExtra("userId");
+
         tvSelectedDate = findViewById(R.id.tvSelectedDate);
         btnDatePicker = findViewById(R.id.btnDatePicker);
         inputAge = findViewById(R.id.input_age);
         inputName = findViewById(R.id.input_name);
+        inputUsername = findViewById(R.id.input_username);
         inputJob = findViewById(R.id.input_job);
         continue1BTN = findViewById(R.id.continuebtn1);
 
@@ -71,12 +75,17 @@ public class BeginActivity1 extends AppCompatActivity {
 
     private boolean validateInputs() {
         String name = inputName.getText().toString().trim();
+        String username = inputUsername.getText().toString();
         String dateOfBirth = tvSelectedDate.getText().toString().trim();
         String age = inputAge.getText().toString().trim();
         String job = inputJob.getText().toString().trim();
 
         if (name.isEmpty()) {
             Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (username.isEmpty()) {
+            Toast.makeText(this, "Please select your username", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (dateOfBirth.isEmpty()) {
@@ -96,12 +105,16 @@ public class BeginActivity1 extends AppCompatActivity {
 
     private void saveUserProfile() {
         String name = inputName.getText().toString();
+        String username = inputUsername.getText().toString();
         String dateOfBirth = tvSelectedDate.getText().toString();
         String age = inputAge.getText().toString();
         String job = inputJob.getText().toString();
 
         UserModel userModel = new UserModel();
+        userModel.setEmail(userEmail);
+        userModel.setUserId(userId);
         userModel.setName(name);
+        userModel.setUsername(username);
         userModel.setDateOfBirth(dateOfBirth);
         userModel.setAge(age);
         //userModel.setJob(job);

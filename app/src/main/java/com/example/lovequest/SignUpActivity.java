@@ -7,10 +7,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.lovequest.model.UserModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,6 +45,19 @@ public class SignUpActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmEmailEditText = findViewById(R.id.confirmEmailEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+
+        //Testing Button
+        Button testingButton = findViewById(R.id.testing_button);
+        testingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class); // Replace NextActivity with your next activity class
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -151,6 +166,8 @@ public class SignUpActivity extends AppCompatActivity {
             FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(userModel)
                     .addOnSuccessListener(aVoid -> {
                         Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
+                        intent.putExtra("email", user.getEmail());
+                        intent.putExtra("userId", user.getUid());
                         startActivity(intent);
                         finish();
                     })
