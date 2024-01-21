@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatRecyclerAdapter chatAdapter;
 
     private EditText messageInput;
-    private ImageButton btnSendMessage, btnBack, btnCall;
+    private ImageButton btnSendMessage, btnBack, btnCall, calendarButton;
     private TextView txtOtherUsername;
     private RecyclerView chatRecyclerView;
     private ImageView imgProfile;
@@ -60,6 +60,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        chatroomId = getIntent().getStringExtra("chatroomId");
 
         initializeViews();
         prepareChatroom();
@@ -76,6 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         btnCall = findViewById(R.id.call_btn);
         messageInput = findViewById(R.id.chat_message_input);
         btnSendMessage = findViewById(R.id.message_send_btn);
+        calendarButton = findViewById(R.id.calendarButton);
         btnBack = findViewById(R.id.back_btn);
         txtOtherUsername = findViewById(R.id.other_username);
         chatRecyclerView = findViewById(R.id.chat_recycler_view);
@@ -99,6 +102,12 @@ public class ChatActivity extends AppCompatActivity {
         });
         txtOtherUsername.setText(otherUser.getUsername());
         btnCall.setOnClickListener(v -> startCall());
+
+        calendarButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatActivity.this, CalendarActivity.class);
+            intent.putExtra("chatroomId", chatroomId); // Pass the chatroomId to the CalendarActivity
+            startActivity(intent);
+        });
     }
 
     private void handleMessages() {

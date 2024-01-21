@@ -22,7 +22,6 @@ public class BeginActivity1 extends AppCompatActivity {
 
     private TextView tvSelectedDate;
     private String userEmail, userId;
-    private Button continue1BTN;
     private Button btnDatePicker, continue1BTN;
     private EditText inputAge, inputName, inputJob, inputUsername;
 

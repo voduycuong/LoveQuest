@@ -18,18 +18,15 @@ public class UserModel {
     private String nationality;
     private String city;
     private String description;
-<<<<<<< HEAD
     private String photoUrl; // URL to the user's photo
     private String eventDate;
-=======
-    private String photoUrl;
->>>>>>> add_profile_picture
+    private String eventDescription;
 
     public UserModel() {
     }
 
     // Constructor with new fields
-    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl, String eventDate,String hobbies) {
+    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String age, String gender, String country, String nationality, String city, String description, String photoUrl, String eventDate, String eventDescription, String hobbies) {
         this.phone = phone;
         this.username = username;
         this.email = email;
@@ -45,6 +42,7 @@ public class UserModel {
         this.description = description;
         this.photoUrl = photoUrl;
         this.eventDate = eventDate;
+        this.eventDescription = eventDescription;
         this.hobbies = hobbies;
     }
 
@@ -179,5 +177,8 @@ public class UserModel {
     public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
     }
+    public String getEventDescription() {return eventDescription;}
+
+    public void setEventDescription(String eventDescription) {this.eventDescription = eventDescription;}
 
 }

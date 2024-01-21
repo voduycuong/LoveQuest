@@ -17,10 +17,23 @@
             android:id="@+id/call_btn"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_accept"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/calendarButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/call_btn"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_calendar"
+            android:contentDescription="@string/calendar"
             app:tint="@color/white" />
 
         <TextView

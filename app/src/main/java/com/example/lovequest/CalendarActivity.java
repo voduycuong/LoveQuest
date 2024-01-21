@@ -1,7 +1,7 @@
 package com.example.lovequest;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -11,90 +11,88 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.lovequest.model.UserModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    CalendarView calendarView;
-    Button addButton;
-    EditText addEventEditText;
-    String selectedDate;
-    DatabaseReference databaseReference;
+    private CalendarView calendarView;
+    private Button addButton;
+    private EditText addEventEditText;
+    private String selectedDate;
+    private String chatroomId;
+    private FirebaseFirestore db;
+    private String[] userIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
+        chatroomId = getIntent().getStringExtra("chatroomId");
+        if (chatroomId == null) {
+            Toast.makeText(this, "Chatroom ID is missing", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         calendarView = findViewById(R.id.calendarView);
         addEventEditText = findViewById(R.id.addEventEditText);
         addButton = findViewById(R.id.addButton);
+        db = FirebaseFirestore.getInstance();
+        userIds = chatroomId.split("_");
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                selectedDate = Integer.toString(year) + Integer.toString(month + 1) + Integer.toString(dayOfMonth);
-                calendarClicked();
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                calendar.set(year, month, dayOfMonth);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                selectedDate = sdf.format(calendar.getTime());
             }
         });
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveEvent();
-            }
-        });
+        addButton.setOnClickListener(v -> saveEvent());
     }
 
-    private void calendarClicked() {
-        databaseReference.child(selectedDate).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue() != null) {
-                    addEventEditText.setText(snapshot.getValue().toString());
-                } else {
-                    addEventEditText.setText("null");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void saveEvent() {
-        UserModel userModel = new UserModel();
-
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            FirebaseFirestore.getInstance().collection("Users").document(currentUser.getUid()).set(userModel)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(CalendarActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(CalendarActivity.this, "Error adding event", Toast.LENGTH_SHORT).show());
-        } else {
-            Toast.makeText(this, "User not signed in", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public boolean eventValidate() {
-        String eventName = addEventEditText.toString().trim();
+    private void saveEvent() {
+        String eventName = addEventEditText.getText().toString().trim();
         if (eventName.isEmpty()) {
             Toast.makeText(this, "Please enter event name", Toast.LENGTH_SHORT).show();
-            return false;
+            return;
         }
-        return true;
+
+        Map<String, Object> eventInfo = new HashMap<>();
+        eventInfo.put("eventDate", selectedDate);
+        eventInfo.put("eventDescription", eventName);
+
+        // Update for the first user
+        updateUserEvent(userIds[0], eventInfo);
     }
+
+    private void updateUserEvent(String userId, Map<String, Object> eventInfo) {
+        Log.d("CalendarActivity", "Attempting to update event for user: " + userId);
+        db.collection("Users")
+                .document(userId)
+                .set(eventInfo, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("CalendarActivity", "Event updated successfully for user: " + userId);
+                    Toast.makeText(CalendarActivity.this, "Event updated for user: " + userId, Toast.LENGTH_SHORT).show();
+                    if (!userId.equals(userIds[1])) {
+                        updateUserEvent(userIds[1], eventInfo);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CalendarActivity", "Error updating event for user: " + userId, e);
+                    Toast.makeText(CalendarActivity.this, "Error updating event for user: " + userId, Toast.LENGTH_SHORT).show();
+                });
+    }
+
 }
