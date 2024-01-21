@@ -20,6 +20,7 @@ import com.example.lovequest.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+
 public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserModel, SearchUserRecyclerAdapter.UserModelViewHolder> {
 
     Context context;
@@ -31,27 +32,41 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
 
     @Override
     protected void onBindViewHolder(@NonNull UserModelViewHolder holder, int position, @NonNull UserModel model) {
-        holder.usernameText.setText(model.getUsername());
-        if(model.getUserId().equals(FirebaseUtil.getCurrentUserId())){
-            holder.usernameText.setText(model.getUsername()+" (Me)");
+        String username = model.getUsername();
+        String userId = model.getUserId();
+        String currentUserId = FirebaseUtil.getCurrentUserId();
+
+        // Set the username text
+        if (username != null) {
+            holder.usernameText.setText(username);
+            if (userId != null && userId.equals(currentUserId)) {
+                holder.usernameText.setText(username + " (Me)");
+            }
         }
 
-        FirebaseUtil.getOtherUserPhotoRef(model.getUserId()).getDownloadUrl()
-                .addOnCompleteListener(t -> {
-                    if(t.isSuccessful()){
-                        Uri uri  = t.getResult();
-                        AndroidUtil.loadProfileImage(context,uri,holder.profilePic);
-                    }
-                });
+        // Load profile image
+        if (userId != null) {
+            FirebaseUtil.getOtherUserPhotoRef(userId).getDownloadUrl()
+                    .addOnCompleteListener(t -> {
+                        if (t.isSuccessful() && t.getResult() != null) {
+                            Uri uri = t.getResult();
+                            AndroidUtil.loadProfileImage(context, uri, holder.profilePic);
+                        }
+                    });
+        }
 
-        holder.itemView.setOnClickListener(v -> {
-            //navigate to chat activity
-            Intent intent = new Intent(context, ChatActivity.class);
-            AndroidUtil.transferUserData(intent,model);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        });
+        // Set item click listener
+        if (userId != null && model != null) {
+            holder.itemView.setOnClickListener(v -> {
+                // Navigate to chat activity
+                Intent intent = new Intent(context, ChatActivity.class);
+                AndroidUtil.transferUserData(intent, model);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
+        }
     }
+
 
     @NonNull
     @Override

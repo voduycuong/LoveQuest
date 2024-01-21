@@ -9,24 +9,27 @@ public class UserModel {
     private Timestamp createdTimestamp;
     private String userId;
     private String fcmToken;
-
-    // New fields
+    private String hobbies;
     private String name;
-    private String dateOfBirth; // Assuming date of birth is a string in format "YYYY-MM-DD"
+    private String dateOfBirth;
     private String age;
     private String gender;
     private String country;
     private String nationality;
     private String city;
     private String description;
+<<<<<<< HEAD
     private String photoUrl; // URL to the user's photo
     private String eventDate;
+=======
+    private String photoUrl;
+>>>>>>> add_profile_picture
 
     public UserModel() {
     }
 
     // Constructor with new fields
-    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl, String eventDate) {
+    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl, String eventDate,String hobbies) {
         this.phone = phone;
         this.username = username;
         this.email = email;
@@ -42,6 +45,7 @@ public class UserModel {
         this.description = description;
         this.photoUrl = photoUrl;
         this.eventDate = eventDate;
+        this.hobbies = hobbies;
     }
 
     public String getPhone() {
@@ -75,6 +79,10 @@ public class UserModel {
     public void setCreatedTimestamp(Timestamp createdTimestamp) {
         this.createdTimestamp = createdTimestamp;
     }
+
+    public String getHobbies() {return hobbies;}
+
+    public void setHobbies(String hobbies) {this.hobbies = hobbies;}
 
     public String getUserId() {
         return userId;
@@ -171,4 +179,5 @@ public class UserModel {
     public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
     }
+
 }

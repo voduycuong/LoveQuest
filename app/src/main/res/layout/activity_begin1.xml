@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BeginActivity1"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/gradient_background"
+    tools:context=".BeginActivity1">
 
     <TextView
         android:id="@+id/textView15"
@@ -18,6 +18,18 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/input_username"
+        android:layout_width="147dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Your username"
+        android:padding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -37,12 +49,12 @@
         android:id="@+id/input_name"
         android:layout_width="351dp"
         android:layout_height="46dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="You can use your full name"
+        android:hint="Your name"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -50,16 +62,16 @@
         android:id="@+id/input_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@id/input_name"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_edittext" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_name" />
 
     <TextView
         android:id="@+id/textView10"
@@ -117,10 +129,10 @@
         android:layout_width="85dp"
         android:layout_height="40dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/hellix_bold"
         android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:fontFamily="@font/hellix_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.036"
         app:layout_constraintStart_toEndOf="@+id/textView11"
