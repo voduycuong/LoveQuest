@@ -83,7 +83,15 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
-        btnBack.setOnClickListener(v -> onBackPressed());
+        btnBack.setOnClickListener(v -> {
+            try {
+                Log.d("ChatActivity", "Back button clicked");
+                onBackPressed();
+            } catch (Exception e) {
+                Log.e("ChatActivity", "Error when pressing back button", e);
+                throw e; // Debugging
+            }
+        });
         txtOtherUsername.setText(otherUser.getUsername());
         btnCall.setOnClickListener(v -> startCall());
     }

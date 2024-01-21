@@ -144,7 +144,7 @@ public class SignInActivity extends AppCompatActivity {
             mainRepository.initializeWebRTCClient(getApplicationContext(), user.getEmail());
 
             // Transition to your MainActivity
-            Intent intent = new Intent(SignInActivity.this, SearchUserActivity.class); // Replace MainActivity.class with your actual main activity class
+            Intent intent = new Intent(SignInActivity.this, HomeScreen.class);
             startActivity(intent);
             finish();
         }

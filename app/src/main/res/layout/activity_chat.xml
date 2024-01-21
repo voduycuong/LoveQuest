@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/my_primary"
+        android:background="@color/primary_color"
         android:padding="10dp"
         android:id="@+id/toolbar">
 
