@@ -50,7 +50,9 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
         backToHomeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent backToHome=new Intent(CallActivity.this, )
+                Intent backToHome = new Intent(CallActivity.this, HomeScreen.class);
+                startActivity(backToHome);
+                finish();
             }
         });
     }
