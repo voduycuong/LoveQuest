@@ -1,7 +1,6 @@
 package com.example.lovequest;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lovequest.utils.FirebaseUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -27,8 +27,6 @@ public class CalendarActivity extends AppCompatActivity {
     private EditText addEventEditText;
     private String selectedDate;
     private String chatroomId;
-    private FirebaseFirestore db;
-    private String[] userIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +43,6 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         addEventEditText = findViewById(R.id.addEventEditText);
         addButton = findViewById(R.id.addButton);
-        db = FirebaseFirestore.getInstance();
-        userIds = chatroomId.split("_");
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -69,30 +65,19 @@ public class CalendarActivity extends AppCompatActivity {
             return;
         }
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> eventInfo = new HashMap<>();
         eventInfo.put("eventDate", selectedDate);
         eventInfo.put("eventDescription", eventName);
 
-        // Update for the first user
-        updateUserEvent(userIds[0], eventInfo);
+        // Extract user IDs from the chatroomId and update each user
+        String[] userIds = chatroomId.split("_");
+        for (String userId : userIds) {
+            db.collection("Users")
+                    .document(userId)
+                    .set(eventInfo, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> Toast.makeText(CalendarActivity.this, "Event updated for user: " + userId, Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(CalendarActivity.this, "Error updating event for user: " + userId, Toast.LENGTH_SHORT).show());
+        }
     }
-
-    private void updateUserEvent(String userId, Map<String, Object> eventInfo) {
-        Log.d("CalendarActivity", "Attempting to update event for user: " + userId);
-        db.collection("Users")
-                .document(userId)
-                .set(eventInfo, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("CalendarActivity", "Event updated successfully for user: " + userId);
-                    Toast.makeText(CalendarActivity.this, "Event updated for user: " + userId, Toast.LENGTH_SHORT).show();
-                    if (!userId.equals(userIds[1])) {
-                        updateUserEvent(userIds[1], eventInfo);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("CalendarActivity", "Error updating event for user: " + userId, e);
-                    Toast.makeText(CalendarActivity.this, "Error updating event for user: " + userId, Toast.LENGTH_SHORT).show();
-                });
-    }
-
 }
