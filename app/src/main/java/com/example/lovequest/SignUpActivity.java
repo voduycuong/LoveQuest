@@ -34,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
+    private Button switchToSignInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +46,26 @@ public class SignUpActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmEmailEditText = findViewById(R.id.confirmEmailEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+        switchToSignInBtn = findViewById(R.id.switchToSignInBtn);
 
-        //Testing Button
+        // Testing Button
         Button testingButton = findViewById(R.id.testing_button);
         testingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class); // Replace NextActivity with your next activity class
+                Intent intent = new Intent(SignUpActivity.this, BeginActivity1.class);
                 startActivity(intent);
                 finish();
             }
         });
 
+        switchToSignInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backToSignIn = new Intent(SignUpActivity.this, SignInActivity.class);
+                startActivity(backToSignIn);
+            }
+        });
 
 
         firebaseAuth = FirebaseAuth.getInstance();

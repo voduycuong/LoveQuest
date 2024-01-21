@@ -2,11 +2,15 @@ package com.example.lovequest;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,12 +25,15 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
     private MainRepository mainRepository;
     private Boolean isCameraMuted = false;
     private Boolean isMicrophoneMuted = false;
+    private ImageView backToHomeBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         views = ActivityCallBinding.inflate(getLayoutInflater());
         setContentView(views.getRoot());
+
+        backToHomeBtn = findViewById(R.id.backToHomeBtn);
 
         mainRepository = MainRepository.getInstance();
 
@@ -39,6 +46,13 @@ public class CallActivity extends AppCompatActivity implements MainRepository.Li
 
         setupCommonViews();
         setupSurfaceViews();
+
+        backToHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backToHome=new Intent(CallActivity.this, )
+            }
+        });
     }
 
     private void setupSurfaceViews() {
