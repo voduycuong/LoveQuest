@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,12 +27,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SignInActivity extends AppCompatActivity {
+    private final int RC_SIGN_IN = 40;
     private ImageView googleSignInBtn;
     private EditText emailEditText, passwordEditText;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private ProgressDialog progressDialog;
-    private final int RC_SIGN_IN = 40;
+    private Button switchToSignUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         googleSignInBtn = findViewById(R.id.googleSignInBtn);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        switchToSignUpBtn = findViewById(R.id.switchToSignUpBtn);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -55,6 +58,14 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signInWithGoogle();
+            }
+        });
+
+        switchToSignUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backToSignUp = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivity(backToSignUp);
             }
         });
 

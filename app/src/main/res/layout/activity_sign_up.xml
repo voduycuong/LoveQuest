@@ -4,28 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity"
+    android:background="@drawable/gradient_background"
     android:padding="16dp"
-    android:background="@drawable/gradient_background">
+    tools:context=".SignUpActivity">
 
     <ImageView
         android:id="@+id/googleSignInBtn"
-        android:layout_width="44dp"
-        android:layout_height="59dp"
+        android:layout_width="29dp"
+        android:layout_height="35dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:src="@drawable/google_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/googleSignInBtn"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_edittext"
+        android:fontFamily="@font/hellix_regular"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
@@ -39,8 +45,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/emailEditText"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_edittext"
+        android:fontFamily="@font/hellix_regular"
         android:hint="Confirm Email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
@@ -54,8 +63,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/confirmEmailEditText"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_edittext"
+        android:fontFamily="@font/hellix_regular"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="10dp"
@@ -69,8 +81,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordEditText"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_edittext"
+        android:fontFamily="@font/hellix_regular"
         android:hint="Confirm Password"
         android:inputType="textPassword"
         android:padding="10dp"
@@ -81,8 +96,8 @@
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="163dp"
-        android:layout_height="48dp"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
         android:layout_below="@id/confirmPasswordEditText"
         android:layout_marginTop="28dp"
         android:text="Sign Up"
@@ -108,20 +123,76 @@
         android:id="@+id/testing_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="testing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/signupimage"
-        android:layout_width="126dp"
-        android:layout_height="155dp"
+        android:layout_width="98dp"
+        android:layout_height="108dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
         app:srcCompat="@drawable/app_icon" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Already have an account?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/googleSignInBtn" />
+
+    <Button
+        android:id="@+id/switchToSignInBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="#00FFFFFF"
+        android:text="Sign In"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/googleSignInBtn" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="OR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="130dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toStartOf="@+id/textView28"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="130dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView28"
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
