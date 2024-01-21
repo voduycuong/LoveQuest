@@ -158,7 +158,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/hellix_bold"
         android:text="Ric"
-        android:textColor="@color/lightyellow"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView30" />
@@ -171,7 +171,7 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/hellix_bold"
         android:text="Sean"
-        android:textColor="@color/chat_color_sender"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView31" />
@@ -184,7 +184,7 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/hellix_bold"
         android:text="kys1"
-        android:textColor="@color/chat_color_receiver"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView32" />
@@ -197,7 +197,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/hellix_bold"
         android:text="Anna"
-        android:textColor="@color/lightred"
+        android:textColor="@color/text_color"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView34" />
