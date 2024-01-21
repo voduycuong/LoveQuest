@@ -107,7 +107,6 @@ public class BeginActivity1 extends AppCompatActivity {
         String username = inputUsername.getText().toString();
         String dateOfBirth = tvSelectedDate.getText().toString();
         String age = inputAge.getText().toString();
-        String job = inputJob.getText().toString();
 
         UserModel userModel = new UserModel();
         userModel.setEmail(userEmail);
@@ -116,7 +115,6 @@ public class BeginActivity1 extends AppCompatActivity {
         userModel.setUsername(username);
         userModel.setDateOfBirth(dateOfBirth);
         userModel.setAge(age);
-        //userModel.setJob(job);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {

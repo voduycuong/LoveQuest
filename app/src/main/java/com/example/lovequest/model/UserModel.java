@@ -19,13 +19,19 @@ public class UserModel {
     private String nationality;
     private String city;
     private String description;
+
+    private String hobbies;
+
+    private String orientation;
+
+    private String job;
     private String photoUrl; // URL to the user's photo
 
     public UserModel() {
     }
 
     // Constructor with new fields
-    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl) {
+    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String orientation, String country, String nationality, String city, String hobbies, String description, String photoUrl) {
         this.phone = phone;
         this.username = username;
         this.email = email;
@@ -35,9 +41,11 @@ public class UserModel {
         this.dateOfBirth = dateOfBirth;
         this.age = age;
         this.gender = gender;
+        this.orientation = orientation;
         this.country = country;
         this.nationality = nationality;
         this.city = city;
+        this.hobbies = hobbies;
         this.description = description;
         this.photoUrl = photoUrl;
     }
@@ -140,6 +148,22 @@ public class UserModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
 
     public String getPhotoUrl() {
