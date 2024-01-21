@@ -50,7 +50,7 @@
 
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_user">User</string>
     <string name="title_chat">Chats</string>
     <string name="add_profile_picture">Select an image for your profile picture</string>
     <string name="calendar">Select a data for the 2 of you</string>

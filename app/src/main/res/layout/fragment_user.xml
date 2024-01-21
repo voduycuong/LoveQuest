@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:clipToPadding="false"
+    tools:context=".UserFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- All the EditText elements for user information -->
+        <ImageView
+            android:id="@+id/profile_image_view"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/person_icon"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circular_bg"
+            android:backgroundTint="@color/my_primary"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/profile_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:inputType="text"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_dateOfBirth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Date of Birth"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Age"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Gender"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Country"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_nationality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nationality"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/profile_hobbies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hobbies"
+            android:inputType="text"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Update profile button and progress bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/logout_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign out"/>
+
+            <Button
+                android:id="@+id/profile_update_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update profile"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

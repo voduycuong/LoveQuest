@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.lovequest.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_user"
+        android:name="com.example.lovequest.ui.user.UserFragment"
+        android:label="@string/title_user"
+        tools:layout="@layout/fragment_user" />
 
     <fragment
         android:id="@+id/navigation_chat"
