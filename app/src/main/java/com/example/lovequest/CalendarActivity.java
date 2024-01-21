@@ -83,7 +83,7 @@ public class CalendarActivity extends AppCompatActivity {
                         Toast.makeText(CalendarActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
                         finish();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(CalendarActivity.this, "Error saving profile", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> Toast.makeText(CalendarActivity.this, "Error adding event", Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(this, "User not signed in", Toast.LENGTH_SHORT).show();
         }
