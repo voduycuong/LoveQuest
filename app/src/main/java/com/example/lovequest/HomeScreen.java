@@ -13,6 +13,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.lovequest.databinding.ActivityHomeScreenBinding;
+import com.example.lovequest.utils.FirebaseUtil;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -36,6 +38,18 @@ public class HomeScreen extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        getFCMToken();
+
+    }
+
+    void getFCMToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                String token = task.getResult();
+                FirebaseUtil.getUserReference().update("fcmToken",token);
+
+            }
+        });
     }
 
 }
