@@ -20,12 +20,13 @@ public class UserModel {
     private String city;
     private String description;
     private String photoUrl; // URL to the user's photo
+    private String eventDate;
 
     public UserModel() {
     }
 
     // Constructor with new fields
-    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl) {
+    public UserModel(String phone, String username, String email, Timestamp createdTimestamp, String userId, String name, String dateOfBirth, String gender, String country, String nationality, String city, String description, String photoUrl, String eventDate) {
         this.phone = phone;
         this.username = username;
         this.email = email;
@@ -40,6 +41,7 @@ public class UserModel {
         this.city = city;
         this.description = description;
         this.photoUrl = photoUrl;
+        this.eventDate = eventDate;
     }
 
     public String getPhone() {
@@ -58,9 +60,13 @@ public class UserModel {
         this.username = username;
     }
 
-    public String getEmail() {return email;}
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) {this.email = email;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Timestamp getCreatedTimestamp() {
         return createdTimestamp;
@@ -156,5 +162,13 @@ public class UserModel {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
     }
 }

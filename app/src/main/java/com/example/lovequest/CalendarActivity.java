@@ -1,19 +1,25 @@
 package com.example.lovequest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lovequest.model.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -40,7 +46,12 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Calendar");
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEvent();
+            }
+        });
     }
 
     private void calendarClicked() {
@@ -61,7 +72,29 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
-    public void addEvent(View v) {
-        databaseReference.child(selectedDate).setValue(addEventEditText.getText().toString());
+    public void saveEvent() {
+        UserModel userModel = new UserModel();
+
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            FirebaseFirestore.getInstance().collection("Users").document(currentUser.getUid()).set(userModel)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(CalendarActivity.this, "Event added successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(CalendarActivity.this, "Error saving profile", Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(this, "User not signed in", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean eventValidate() {
+        String eventName = addEventEditText.toString().trim();
+        if (eventName.isEmpty()) {
+            Toast.makeText(this, "Please enter event name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
